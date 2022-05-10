@@ -7,6 +7,20 @@ export default {
         where: {
           username,
         },
+        include: {
+          followers: {
+            select: {
+              username: true,
+              id: true,
+            },
+          },
+          following: {
+            select: {
+              username: true,
+              id: true,
+            },
+          },
+        },
       }),
   },
 };

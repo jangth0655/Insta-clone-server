@@ -37,9 +37,14 @@ const resolvers: Resolvers = {
             password: uglyPassword,
           },
         });
-        return user;
+        return {
+          ok: true,
+        };
       } catch (e) {
-        throw new Error(`find ${e}`);
+        return {
+          ok: false,
+          error: "Could not create account.",
+        };
       }
     },
   },

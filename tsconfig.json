@@ -3,6 +3,7 @@
     "outDir": "./built",
     "allowJs": true,
     "target": "es5"
+    //"esModuleInterop": true
   },
   "include": ["./src/**/*"]
 }
