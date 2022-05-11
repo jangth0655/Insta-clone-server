@@ -3,6 +3,7 @@ import { protectResolver } from "../user.utils";
 import { Resolvers } from "../../types";
 import { GraphQLUpload } from "graphql-upload";
 import { ReadStream, WriteStream, createWriteStream } from "fs";
+import { uploadToS3 } from "../../shared/shared.utils";
 
 const resolvers: Resolvers = {
   Upload: GraphQLUpload as any,
@@ -24,18 +25,8 @@ const resolvers: Resolvers = {
       ) => {
         let avatarUrl = null;
         if (avatar) {
-          const { filename, createReadStream } = await avatar;
-          const newFilename = `${
-            loggedInUser.id
-          } - ${Date.now()} - ${filename}`;
-          const readSteam: ReadStream = createReadStream();
-          const writeStream: WriteStream = createWriteStream(
-            process.cwd() + "/uploads/" + newFilename
-          );
-          readSteam.pipe(writeStream);
-          avatarUrl = `http://localhost:4000/static/${newFilename}`;
+          avatarUrl = await uploadToS3(avatar, loggedInUser.id, "avatars");
         }
-
         let uglyPassword = null;
         if (newPassword) {
           uglyPassword = await bcrypt.hash(newPassword, 10);
@@ -70,3 +61,15 @@ const resolvers: Resolvers = {
 };
 
 export default resolvers;
+
+/*const { filename, createReadStream } = await avatar;
+            const newFilename = `${
+            loggedInUser.id
+          } - ${Date.now()} - ${filename}`;
+          const readSteam: ReadStream = createReadStream();
+          const writeStream: WriteStream = createWriteStream(
+            process.cwd() + "/uploads/" + newFilename
+          );
+          readSteam.pipe(writeStream);
+          avatarUrl = `http://localhost:4000/static/${newFilename}`;
+        } */
