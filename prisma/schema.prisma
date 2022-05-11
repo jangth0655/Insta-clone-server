@@ -55,4 +55,6 @@ model Like {
   user      User     @relation(fields: [userId], references: [id])
   photoId   Int
   userId    Int
+
+  @@unique([userId, photoId])
 }
