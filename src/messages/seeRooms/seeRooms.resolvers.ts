@@ -3,16 +3,17 @@ import { protectResolver } from "../../users/user.utils";
 
 const resolvers: Resolvers = {
   Query: {
-    seeRooms: protectResolver(async (_, {}, { loggedInUser, client }) =>
-      client.room.findMany({
-        where: {
-          users: {
-            some: {
-              id: loggedInUser.id,
+    seeRooms: protectResolver(
+      async (_, {}, { loggedInUser, client }) =>
+        await client.room.findMany({
+          where: {
+            users: {
+              some: {
+                id: loggedInUser.id,
+              },
             },
           },
-        },
-      })
+        })
     ),
   },
 };

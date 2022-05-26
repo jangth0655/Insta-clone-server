@@ -3,29 +3,33 @@ import { protectResolver } from "../../users/user.utils";
 
 const resolvers: Resolvers = {
   Query: {
-    seeFeed: protectResolver(async (_, {}, { client, loggedInUser }) => {
-      return await client.photo.findMany({
-        where: {
-          OR: [
-            {
-              user: {
-                followers: {
-                  some: {
-                    id: loggedInUser.id,
+    seeFeed: protectResolver(
+      async (_, { offset }, { client, loggedInUser }) => {
+        return await client.photo.findMany({
+          take: 2,
+          skip: offset,
+          where: {
+            OR: [
+              {
+                user: {
+                  followers: {
+                    some: {
+                      id: loggedInUser.id,
+                    },
                   },
                 },
               },
-            },
-            {
-              userId: loggedInUser.id,
-            },
-          ],
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-      });
-    }),
+              {
+                userId: loggedInUser.id,
+              },
+            ],
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        });
+      }
+    ),
   },
 };
 

@@ -23,12 +23,15 @@ const resolvers: Resolvers = {
             error: "Incorrect Password",
           };
         }
+
         const token = await jwt.sign({ id: user.id }, process.env.SECRET_KEY);
+
         return {
           ok: true,
           token,
         };
       } catch (e) {
+        console.log("error");
         console.log(e);
         return;
       }

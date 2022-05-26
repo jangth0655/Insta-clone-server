@@ -1,9 +1,13 @@
 {
   "compilerOptions": {
-    "outDir": "./built",
+    "sourceMap": true,
+    "outDir": "./build",
     "allowJs": true,
-    "target": "es5"
-    //"esModuleInterop": true
+    "target": "es5",
+    //"strict": true,
+    "lib": ["esnext"],
+    "esModuleInterop": true,
+    "module": "CommonJS"
   },
   "include": ["./src/**/*"]
 }

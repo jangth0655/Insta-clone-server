@@ -1,5 +1,5 @@
 import "dotenv/config";
-import * as express from "express";
+import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { graphqlUploadExpress } from "graphql-upload";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
@@ -30,6 +30,9 @@ const serverCleanup = useServer(
   {
     schema,
     context: async ({ connectionParams: { token } }) => {
+      if (!token) {
+        throw new Error("You can't listen.");
+      }
       const loggedInUser = await getUser(token as string);
       return { loggedInUser };
     },
@@ -50,7 +53,7 @@ const startServer = async () => {
     context: async (ctx) => {
       if (ctx.req) {
         return {
-          loggedInUser: await getUser(ctx.req.headers.token),
+          loggedInUser: await getUser(ctx.req.headers.token as any),
           client,
         };
       }

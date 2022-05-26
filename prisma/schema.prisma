@@ -68,7 +68,7 @@ model Comment {
   updatedAt DateTime @updatedAt
   id        Int      @id @default(autoincrement())
   user      User     @relation(fields: [userId], references: [id])
-  photo     Photo    @relation(fields: [photoId], references: [id])
+  photo     Photo    @relation(fields: [photoId], references: [id], onDelete: Cascade)
   userId    Int
   photoId   Int
   payload   String
