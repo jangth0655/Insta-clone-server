@@ -5,6 +5,7 @@ import { graphqlUploadExpress } from "graphql-upload";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import { useServer } from "graphql-ws/lib/use/ws";
 import { WebSocketServer } from "ws";
+import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 
 import { createServer } from "http";
 
@@ -59,6 +60,7 @@ const startServer = async () => {
       }
     },
     plugins: [
+      ApolloServerPluginLandingPageGraphQLPlayground(),
       ApolloServerPluginDrainHttpServer({ httpServer }),
       {
         async serverWillStart() {
